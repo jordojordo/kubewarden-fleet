@@ -1,0 +1,33 @@
+defaultNamespace: kubewarden
+
+namespaceLabels:
+  pod-security.kubernetes.io/enforce: baseline
+  pod-security.kubernetes.io/enforce-version: latest
+  pod-security.kubernetes.io/audit: baseline
+  pod-security.kubernetes.io/audit-version: latest
+  pod-security.kubernetes.io/warn: baseline
+  pod-security.kubernetes.io/warn-version: latest
+
+helm:
+  releaseName: kubewarden-controller
+  chart: kubewarden-controller
+  repo: https://charts.kubewarden.io
+  version: 2.0.11
+  values:
+    auditScanner:
+      enable: true
+      policyReporter: true
+    telemetry:
+      metrics:
+        enabled: false
+      tracing:
+        enabled: false
+
+labels:
+  app: kubewarden-controller
+
+# Check https://fleet.rancher.io/ref-fleet-yaml
+dependsOn:
+  - selector:
+      matchLabels:
+        app: kubewarden-crds
